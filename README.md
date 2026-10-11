@@ -1,6 +1,6 @@
 # Pirate Battle
 
-[Play the public game](https://pirate-battle-jungle.bernardomaia57.chatgpt.site) · [Source repository](https://github.com/SempreGM/pirate-battle)
+[Play the public game](https://pirate-battle-sempregm.vercel.app) · [Source repository](https://github.com/SempreGM/pirate-battle)
 
 A browser naval survival shooter built with React, strict TypeScript and PixiJS. Navigate islands, fire front and broadside cannons, and survive Chasers and Shooters. Ranking/history are REST APIs simulated by MSW, consumed with Axios and TanStack Query.
 
@@ -77,7 +77,7 @@ To reproduce timeout recovery: choose post-commit-timeout and complete a voyage.
 
 ## Deployment
 
-The public game is hosted at https://pirate-battle-jungle.bernardomaia57.chatgpt.site. Anonymous desktop/mobile verification covered opening, reload, asset loading, combat entry, pause/resume and JSON responses from both mocked APIs, with no uncaught JavaScript errors; see [reports/deployment.json](reports/deployment.json). Reproduce with `node scripts/verify-deployment.mjs` after installing Playwright Chromium. Set `DEPLOYMENT_URL` to check another root URL.
+The public game is hosted at https://pirate-battle-sempregm.vercel.app. Anonymous desktop/mobile verification covered opening, reload, asset loading, combat entry, pause/resume and JSON responses from both mocked APIs, with no uncaught JavaScript errors; see [reports/deployment.json](reports/deployment.json). Reproduce with `node scripts/verify-deployment.mjs` after installing Playwright Chromium. Set `DEPLOYMENT_URL` to check another root URL.
 
 For another deployment, deploy `dist/` after `npm run build` to a static HTTPS host, such as Vercel, Netlify or Cloudflare Pages. Use the root URL (assets and service worker use absolute root paths). The generated `public/mockServiceWorker.js` must be deployed and served as JavaScript; do not rewrite it to HTML. HTTPS or localhost is required for the service worker. A reload works without a private backend.
 

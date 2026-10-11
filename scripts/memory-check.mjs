@@ -14,7 +14,7 @@ try {
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(
     process.env.DEPLOYMENT_URL ??
-      "https://pirate-battle-jungle.bernardomaia57.chatgpt.site",
+      "https://pirate-battle-sempregm.vercel.app",
   );
   const samples = [];
   for (let cycle = 1; cycle <= 20; cycle++) {

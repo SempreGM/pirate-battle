@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 
 const url =
   process.env.DEPLOYMENT_URL ??
-  "https://pirate-battle-jungle.bernardomaia57.chatgpt.site";
+  "https://pirate-battle-sempregm.vercel.app";
 const browser = await chromium.launch({
   args: ["--use-angle=swiftshader", "--enable-webgl", "--ignore-gpu-blocklist"],
 });

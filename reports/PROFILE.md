@@ -53,7 +53,7 @@ For an interactive Windows measurement against the public optimized build:
 
 ```powershell
 $env:PROFILE_HEADED = '1'
-$env:PROFILE_URL = 'https://pirate-battle-jungle.bernardomaia57.chatgpt.site'
+$env:PROFILE_URL = 'https://pirate-battle-sempregm.vercel.app'
 $env:PROFILE_OUTPUT = 'reports/profile-hardware.json'
 npm.cmd run profile
 ```
