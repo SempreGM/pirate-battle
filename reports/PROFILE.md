@@ -32,7 +32,13 @@ DOM/listener counts stabilize after cycle 1, supporting cleanup of gameplay inpu
 
 The investigation checked the application's cleanup and the installed Pixi texture system: application destruction removes managed GPU resources and texture event subscriptions while cached source textures remain reusable. The game disconnects ResizeObserver, removes window/document input listeners, destroys ticker/display objects and unloads audio elements. React Query and Pixi asset caches intentionally remain mounted. This explains possible retained allocations but does not prove the entire heap delta is benign. Longer-cycle heap snapshots and retainer analysis remain required to distinguish cache/JIT warm-up from continuing retention.
 
-## Reproduction
+## Extended public-build memory investigation
+
+[memory-20-cycles.json](memory-20-cycles.json) records 20 independent start/play/exit cycles on the public optimized build, with two seconds of actual combat per cycle and forced garbage collection after returning to the menu. No uncaught JavaScript errors occurred. Documents (3), DOM nodes (267) and JavaScript listeners (188) stayed constant across all samples.
+
+Heap usage increased from 8,236,036 to 10,165,096 bytes (approximately 1.84 MiB). Growth slowed after initial cycles but continued through cycle 20, so this investigation does not certify leak-free behavior. Retainer snapshots remain necessary to identify the allocations; no speculative cleanup patch was applied. Reproduce with `node scripts/memory-check.mjs`.
+
+## Profiling commands
 
 ```sh
 npm run build
@@ -41,4 +47,15 @@ npm run preview
 npm run profile
 ```
 
-Use `PROFILE_URL` to target another optimized preview, `PROFILE_SOFTWARE=1` to force SwiftShader, and `PROFILE_OUTPUT` for a separate raw JSON output path. On Windows, use `npm.cmd` and set `PLAYWRIGHT_BROWSERS_PATH` to the same directory used for installation. Run without simultaneous browser tests or builds. A captain may die earlier with different frame/input timing; always check `activeDuration` and `reason` before calling it a three-minute match.
+Use `PROFILE_URL` to target another optimized preview, `PROFILE_SOFTWARE=1` to force SwiftShader, `PROFILE_HEADED=1` to use a visible browser on the target computer, and `PROFILE_OUTPUT` for a separate raw JSON output path. The reported WebGL renderer must identify the actual GPU before calling a run hardware-accelerated. On Windows, use `npm.cmd` and set `PLAYWRIGHT_BROWSERS_PATH` to the same directory used for installation. Run without simultaneous browser tests or builds. A captain may die earlier with different frame/input timing; always check `activeDuration` and `reason` before calling it a three-minute match.
+
+For an interactive Windows measurement against the public optimized build:
+
+```powershell
+$env:PROFILE_HEADED = '1'
+$env:PROFILE_URL = 'https://pirate-battle-jungle.bernardomaia57.chatgpt.site'
+$env:PROFILE_OUTPUT = 'reports/profile-hardware.json'
+npm.cmd run profile
+```
+
+Keep the browser focused throughout the measurement. Hardware results have not yet been collected.

@@ -1,0 +1,42 @@
+{
+  "measuredAt": "2026-10-11T14:43:21.846Z",
+  "url": "https://pirate-battle-jungle.bernardomaia57.chatgpt.site",
+  "anonymousBrowser": true,
+  "checks": [
+    {
+      "viewport": "desktop",
+      "opening": true,
+      "reload": true,
+      "arena": true,
+      "pauseResume": true,
+      "mockApiResponses": [
+        {
+          "status": 200,
+          "type": "application/json"
+        },
+        {
+          "status": 200,
+          "type": "application/json"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "opening": true,
+      "reload": true,
+      "arena": true,
+      "pauseResume": true,
+      "mockApiResponses": [
+        {
+          "status": 200,
+          "type": "application/json"
+        },
+        {
+          "status": 200,
+          "type": "application/json"
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

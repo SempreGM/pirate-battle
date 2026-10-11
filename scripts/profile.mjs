@@ -2,6 +2,7 @@ import { chromium } from "playwright";
 import fs from "node:fs";
 import os from "node:os";
 const browser = await chromium.launch({
+  headless: process.env.PROFILE_HEADED !== "1",
   args: [
     ...(process.env.PROFILE_SOFTWARE === "1"
       ? ["--use-angle=swiftshader"]
