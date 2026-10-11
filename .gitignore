@@ -22,3 +22,4 @@ playwright-report/
 .npm-cache/
 .browsers/
 site-build.tar.gz
+.vercel/
