@@ -1,0 +1,100 @@
+{
+  "measuredAt": "2026-10-11T14:23:06.329Z",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26300",
+    "cpu": "AMD Ryzen 5 3600X 6-Core Processor             ",
+    "cpuCount": 12,
+    "totalMemory": 34267561984,
+    "browser": "156.0.8078.4",
+    "resolution": "1440x1000",
+    "renderer": "headless Chromium / SwiftShader software WebGL"
+  },
+  "config": {
+    "sessionSeconds": 180,
+    "spawnSeconds": 10,
+    "worldWidth": 1200,
+    "worldHeight": 760,
+    "playerHealth": 100,
+    "playerSpeed": 170,
+    "playerRotation": 2.6,
+    "playerRadius": 22,
+    "chaserHealth": 30,
+    "chaserSpeed": 105,
+    "chaserRotation": 2.3,
+    "chaserDamage": 25,
+    "enemyRadius": 21,
+    "shooterHealth": 50,
+    "shooterSpeed": 75,
+    "shooterRotation": 1.8,
+    "shooterRange": 330,
+    "shooterCooldown": 1.5,
+    "playerDamage": 10,
+    "enemyDamage": 10,
+    "projectileSpeed": 480,
+    "projectileLifetime": 1.8,
+    "projectileRadius": 4,
+    "frontCooldown": 0.3,
+    "sideCooldown": 1,
+    "safeSpawnDistance": 340,
+    "spawnAttempts": 48,
+    "enemyDistribution": "alternating"
+  },
+  "reason": "player_destroyed",
+  "activeDuration": 74.85833333333898,
+  "score": 3,
+  "frames": 1399,
+  "fps": 18.55103058334306,
+  "frameIntervalP95": 100,
+  "maxEntities": 25,
+  "memory": [
+    {
+      "label": "baseline",
+      "documents": 2,
+      "nodes": 209,
+      "jsEventListeners": 213,
+      "heapBytes": 7974532
+    },
+    {
+      "label": "cycle-1",
+      "documents": 2,
+      "nodes": 232,
+      "jsEventListeners": 205,
+      "heapBytes": 8203560
+    },
+    {
+      "label": "cycle-2",
+      "documents": 2,
+      "nodes": 232,
+      "jsEventListeners": 205,
+      "heapBytes": 8362376
+    },
+    {
+      "label": "cycle-3",
+      "documents": 2,
+      "nodes": 232,
+      "jsEventListeners": 205,
+      "heapBytes": 8451532
+    },
+    {
+      "label": "cycle-4",
+      "documents": 2,
+      "nodes": 232,
+      "jsEventListeners": 205,
+      "heapBytes": 8570960
+    },
+    {
+      "label": "cycle-5",
+      "documents": 2,
+      "nodes": 232,
+      "jsEventListeners": 205,
+      "heapBytes": 8708228
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Software rendering is not a consumer GPU reference.",
+    "Five-cycle measurement is a bounded smoke investigation, not a long-duration leak proof.",
+    "MSW/React query caches and shared Pixi texture caches remain alive intentionally."
+  ]
+}

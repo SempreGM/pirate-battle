@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+test-results/
+playwright-report/
+*.tsbuildinfo
+.sites-runtime/
+.sites-checkout/
+.npm-cache/
+.browsers/
+site-build.tar.gz

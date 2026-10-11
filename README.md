@@ -1,0 +1,86 @@
+# Pirate Battle
+
+A browser naval survival shooter built with React, strict TypeScript and PixiJS. Navigate islands, fire front and broadside cannons, and survive Chasers and Shooters. Ranking/history are REST APIs simulated by MSW, consumed with Axios and TanStack Query.
+
+The original assignment is preserved in [CHALLENGE.md](CHALLENGE.md). Observable behavior is defined in [BUSINESS_RULES.md](BUSINESS_RULES.md). See [ARCHITECTURE.md](ARCHITECTURE.md), [DELIVERY_STATUS.md](DELIVERY_STATUS.md) and [ASSET_SOURCES.md](ASSET_SOURCES.md) for decisions, verification and limitations.
+
+## Setup
+
+Use Node.js 22.12+ (verified with Node 24) and npm. No environment variables or private services are required. From a clean checkout:
+
+```sh
+npm ci
+npx playwright install chromium
+npm run dev
+```
+
+Open http://127.0.0.1:5173. On Windows PowerShell with blocked `.ps1` execution, use `npm.cmd` / `npx.cmd`. Browsers can be installed in the workspace by setting `$env:PLAYWRIGHT_BROWSERS_PATH = Join-Path (Get-Location) '.browsers'` before both installation and tests.
+
+```sh
+npm run build
+npm run preview
+npm run lint
+npm run typecheck
+npm run test:e2e
+npm run test:visual
+npm run test:report
+```
+
+Generate intentional initial/updated visual baselines with `npx playwright test --update-snapshots`; inspect changes before accepting them. Tests target desktop and mobile Chromium. HTML reports are in `playwright-report/`, failure traces in `test-results/`. Reports are generated artifacts, not source.
+
+## Controls
+
+| Action | Keyboard |
+| --- | --- |
+| Forward | W / Up |
+| Rotate | A / Left, D / Right |
+| Front cannon (one projectile) | Space |
+| Port / starboard (three parallel projectiles) | Q / E |
+| Pause | P / Escape |
+
+Mobile portrait and landscape provide on-screen controls supporting simultaneous touches. Hold weapons to repeat at their cooldown rate. Press Resume after manual pause, focus loss or a hidden tab. Loading and paused time do not count toward the session.
+
+## Options and balance
+
+Options require integer session time 60–180 seconds and spawn time 1–10 seconds. Save applies to subsequent matches and persists after refresh. Each match captures the entire frozen gameplay configuration. Defaults: 120 seconds, 3-second alternating spawns, player health 100, Chaser health 30 / impact 25, Shooter health 50 / shot 10, player shot damage 10. One point per enemy destroyed by player fire; Chaser self-destruction earns zero.
+
+Typed parameters in `src/game/config.ts`: player speed 170 units/s and rotation 2.6 rad/s; Chaser 105 / 2.3; Shooter 75 / 1.8; projectile speed 480 units/s and lifetime 1.8s; front cooldown 0.3s; each broadside 1s; Shooter 1.5s with 330-unit range. Collision radii: player 22, enemy 21, projectile 4. World is 1200 × 760; safe spawn separation 340; at most 48 candidates. Changes affecting comparability require a rules-version update and business-rule/documentation changes.
+
+Reloading unfinished combat abandons it without registering anything. Completed results persist. The captain ID is local to browser storage; no login required. History lists confirmed local voyages; ranking compares match entries with the exact same gameplay configuration and rules version. Fixtures represent other players. There is no shared server leaderboard.
+
+## Network scenarios and recovery
+
+Open **Harbor status**, select a network scenario and press Done. Combat remains usable regardless of failures.
+
+| Scenario | Behavior |
+| --- | --- |
+| success | Deterministic 32-entry ranking fixture, ten entries per page |
+| multiple-pages | Ranking fixtures plus 12 demo voyages for the current captain, shared with history |
+| empty | No fixture records; confirmed user records remain |
+| slow | 1800ms delay |
+| variable-latency | Deterministic counter-based delay |
+| out-of-order | Alternating 1500ms / 100ms |
+| timeout | Response delayed past Axios's 2500ms deadline |
+| connection-failure | Network error |
+| http-400 / http-500 | HTTP validation / transient failure |
+| ranking-failure / history-failure | Only the selected read endpoint fails |
+| post-commit-timeout | First POST commits before its response times out; same-ID retry recovers it |
+| outage | Read/write service unavailable until another scenario is selected |
+
+To reproduce durable recovery: select outage, complete a voyage, refresh, select success and retry the pending result. You can start another voyage at any time. A result is queued locally before submission and removed only after confirmation. At most two transient automatic retries; validation errors require manual action. Repeated requests with the same match ID never duplicate a record.
+
+To reproduce timeout recovery: choose post-commit-timeout and complete a voyage. The first request times out, but a retry acknowledges the already committed record. Ranking and history are invalidated after confirmation. To reproduce stale response protection: choose out-of-order and switch pages/tabs/scenarios; query keys and AbortSignal cancellation isolate each view.
+
+**Reset demo data** opens an explicit confirmation before clearing records, pending queue, last result, query cache and faults. Options and captain identity are kept. Reset waits for in-flight submissions to finish. All demo state lives under the `pirate-battle:` localStorage prefix.
+
+## Deployment
+
+Deploy `dist/` after `npm run build` to a static HTTPS host, such as Vercel, Netlify or Cloudflare Pages. Use the root URL (assets and service worker use absolute root paths). The generated `public/mockServiceWorker.js` must be deployed and served as JavaScript; do not rewrite it to HTML. HTTPS or localhost is required for the service worker. A reload works without a private backend. No deployment URL is claimed until verified.
+
+## Performance
+
+Run optimized preview and `npm run profile` to collect production frame timing, p95, entity counts and five lifecycle cycles. The initial automated environment may use software WebGL; see the report's environment and limitations before interpreting the 60 FPS target. Profiling results must be measured, not inferred from a successful build.
+
+## Asset provenance
+
+Original supplied files remain in `assets/`; `public/assets/` is the serving copy. See `ASSET_SOURCES.md`. No asset license was supplied, so redistribution permissions still need confirmation from the evaluator.
